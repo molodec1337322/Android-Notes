@@ -27,20 +27,21 @@ class MainActivity : AppCompatActivity() {
     private lateinit var recycler: RecyclerView
     private lateinit var button_add: ImageButton
 
-    private var notes: ArrayList<Note> = ArrayList<Note>()
+    private var notes: MutableList<Note> = mutableListOf<Note>()
     private var notesData: NotesData? = null
     private var adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>? = null
 
     private val context: Context = this
 
     private val PERMISSION_CODE: Int = 1000
-    private val NOTES = "notes"
 
     companion object{
         const val CREATE_NEW_NOTE = 1
         const val EDIT_NOTE = 2
         const val RESULT_OK = 1
         const val RESULT_CANCELED = -1
+
+        const val NOTES = "notes"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +52,7 @@ class MainActivity : AppCompatActivity() {
 
         getDataFromDB()
 
-        adapter = NoteAdapter(notes)
+        adapter = NoteAdapter(notes, context)
 
         recycler = recycle_list
         recycler.setHasFixedSize(true)
@@ -62,11 +63,6 @@ class MainActivity : AppCompatActivity() {
         button_add = btn_create_new
 
         button_add.setOnClickListener(View.OnClickListener {
-            /*
-            notes.add(Note(text, SimpleDateFormat("dd/M/yyyy hh:mm", Locale.getDefault()).format(Date())))
-            adapter.notifyItemInserted(notes.size - 1)
-            */
-
             val intent = Intent(context, CreateActivity::class.java)
             startActivityForResult(intent, CREATE_NEW_NOTE)
         })
@@ -118,15 +114,6 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
-
-    /*
-    fun addNewNote(){
-        val noteText = intent.extras?.getString(CreateActivity.NOTE_TEXT)
-        val noteTimeStamp = intent.extras?.getString(CreateActivity.NOTE_TIMESTAMP)
-
-        if(noteText)
-    }
-    */
 
     fun putDataInDB(){
         val tinyDB = TinyDB(context)
