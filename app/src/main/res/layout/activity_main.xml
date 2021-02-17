@@ -8,7 +8,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:background="@color/colorPrimary">
 
         <TextView
@@ -24,8 +24,8 @@
 
         <ImageButton
             android:id="@+id/btn_create_new"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:layout_alignParentEnd="true"
             android:layout_gravity="end"
             android:layout_marginTop="20dp"

@@ -11,6 +11,17 @@
         android:orientation="vertical"
         android:background="@color/colorPrimary">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_marginStart="24dp"
+            android:layout_marginTop="20dp"
+            android:gravity="start"
+            android:text="Создать заметку"
+            android:textColor="#FFFFFF"
+            android:textSize="24sp" />
+
         <ImageButton
             android:id="@+id/btn_create_new_accept"
             android:layout_width="40dp"

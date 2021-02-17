@@ -24,5 +24,4 @@ class NoteAdapter(val notes: List<Note>): RecyclerView.Adapter<RecyclerView.View
         val timestamp = holder.itemView.findViewById<TextView>(R.id.text_timestamp)
         timestamp.setText(notes.get(position).getTimestamp())
     }
-
 }
