@@ -14,8 +14,7 @@ import com.example.androidnotes.activities.MainActivity
 class NoteAdapter(val notes: MutableList<Note>, val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return object: RecyclerView.ViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.items, parent, false)){}
+        return object: RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.items, parent, false)){}
     }
 
     override fun getItemCount(): Int {
@@ -34,9 +33,13 @@ class NoteAdapter(val notes: MutableList<Note>, val context: Context): RecyclerV
             putDataInDB()
             this.notifyDataSetChanged()
         })
+
+        holder.itemView.setOnClickListener(View.OnClickListener {
+
+        })
     }
 
-    fun putDataInDB(){
+    private fun putDataInDB(){
         val tinyDB = TinyDB(context)
         tinyDB.putObject(MainActivity.NOTES, NotesData(notes))
     }
