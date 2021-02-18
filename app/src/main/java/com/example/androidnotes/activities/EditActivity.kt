@@ -15,15 +15,19 @@ class EditActivity: Activity() {
 
     private lateinit var btn_cancel: ImageButton
     private lateinit var btn_save: ImageButton
+    private lateinit var edit_title: EditText
     private lateinit var edit_text: EditText
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.edit_activity)
 
+        val title = intent.getStringExtra(MainActivity.NOTE_TITLE)
         val text = intent.getStringExtra(MainActivity.NOTE_TEXT)
         val position = intent.getIntExtra(MainActivity.NOTE_POSITION, 0)
 
+        edit_title = text_note_edit_title
+        edit_title.setText(title)
         edit_text = text_note_edit_text
         edit_text.setText(text)
 
@@ -38,6 +42,7 @@ class EditActivity: Activity() {
         btn_save.setOnClickListener(View.OnClickListener {
             val intent = Intent(this, MainActivity::class.java)
 
+            intent.putExtra(MainActivity.NOTE_TITLE, edit_title.text.toString())
             intent.putExtra(MainActivity.NOTE_TEXT, edit_text.text.toString())
             intent.putExtra(MainActivity.NOTE_TIMESTAMP, SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault()).format(Date()).toString())
             intent.putExtra(MainActivity.NOTE_POSITION, position)

@@ -20,15 +20,13 @@
             android:layout_marginStart="20dp"
             android:layout_marginTop="10dp"
             android:background="@color/colorPrimary"
-            android:src="@drawable/ic_baseline_arrow_back_ios_40" />
+            android:src="@drawable/ic_baseline_close_40" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="18dp"
-            android:layout_marginEnd="20dp"
-            android:layout_toStartOf="@+id/btn_edit_accept"
             android:layout_toEndOf="@+id/btn_edit_cancel"
             android:gravity="start"
             android:text="Редактирование заметки"
@@ -49,13 +47,21 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <EditText
+            android:id="@+id/text_note_edit_title"
+            android:layout_width="match_parent"
+            android:hint="Заголовок"
+            android:layout_height="60dp"/>
+
+        <EditText
             android:id="@+id/text_note_edit_text"
             android:layout_width="match_parent"
+            android:layout_marginTop="8dp"
+            android:hint="Текст"
             android:layout_height="match_parent"/>
 
     </LinearLayout>

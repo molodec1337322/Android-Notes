@@ -44,6 +44,7 @@ class MainActivity : AppCompatActivity() {
 
         const val NOTES = "notes"
         const val NOTE_TEXT = "note_text"
+        const val NOTE_TITLE = "note_title"
         const val NOTE_TIMESTAMP = "note_timestamp"
         const val NOTE_POSITION = "note_position"
     }
@@ -76,10 +77,11 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == CREATE_NEW_NOTE && resultCode == RESULT_OK){
+            val noteTitle = data?.extras?.getString(NOTE_TITLE)
             val noteText = data?.extras?.getString(NOTE_TEXT)
             val noteTimeStamp = data?.extras?.getString(NOTE_TIMESTAMP)
 
-            notes.add(Note(noteText!!, noteTimeStamp!!))
+            notes.add(Note(noteTitle!!, noteText!!, noteTimeStamp!!))
             adapter!!.notifyItemChanged(notes.size - 1)
 
             putDataInDB()
@@ -87,11 +89,13 @@ class MainActivity : AppCompatActivity() {
             Toast.makeText(context, "Заметка создана", Toast.LENGTH_SHORT).show()
         }
         else if(requestCode == EDIT_NOTE && resultCode == RESULT_OK){
+            val noteTitle = data?.extras?.getString(NOTE_TITLE)
             val noteText = data?.extras?.getString(NOTE_TEXT)
             val noteTimestamp = data?.extras?.getString(NOTE_TIMESTAMP)
             val notePos = data?.extras?.getInt(NOTE_POSITION)
 
             val note = notes[notePos!!]
+            note.setTitle(noteTitle!!)
             note.setText(noteText!!)
             note.setTimestamp("Изменено $noteTimestamp")
 

@@ -9,8 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
-import android.widget.Toast
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidnotes.R
 import com.example.androidnotes.TinyDB.TinyDB
@@ -28,7 +26,9 @@ class NoteAdapter(val notes: MutableList<Note>, val context: Context): RecyclerV
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val noteText = holder.itemView.findViewById<TextView>(R.id.text_note_name)
+        val noteTitle = holder.itemView.findViewById<TextView>(R.id.title_note)
+        noteTitle.setText(notes.get(position).getTitle())
+        val noteText = holder.itemView.findViewById<TextView>(R.id.text_note)
         noteText.setText(notes.get(position).getText())
         val timestamp = holder.itemView.findViewById<TextView>(R.id.text_timestamp)
         timestamp.setText(notes.get(position).getTimestamp())
@@ -42,9 +42,13 @@ class NoteAdapter(val notes: MutableList<Note>, val context: Context): RecyclerV
 
         holder.itemView.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, EditActivity::class.java)
+
+            intent.putExtra(MainActivity.NOTE_TITLE, notes[position].getTitle())
             intent.putExtra(MainActivity.NOTE_TEXT, notes[position].getText())
             intent.putExtra(MainActivity.NOTE_POSITION, position)
+
             val tempActivity = context as Activity
+
             tempActivity.startActivityForResult(intent, MainActivity.EDIT_NOTE)
         })
     }
