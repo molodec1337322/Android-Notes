@@ -54,7 +54,8 @@
         <EditText
             android:id="@+id/text_note_text"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            />
 
     </LinearLayout>
 

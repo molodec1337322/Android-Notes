@@ -23,8 +23,8 @@ class NoteAdapter(val notes: MutableList<Note>, val context: Context): RecyclerV
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val name = holder.itemView.findViewById<TextView>(R.id.text_note_name)
-        name.setText(notes.get(position).getText())
+        val noteText = holder.itemView.findViewById<TextView>(R.id.text_note_name)
+        noteText.setText(notes.get(position).getText())
         val timestamp = holder.itemView.findViewById<TextView>(R.id.text_timestamp)
         timestamp.setText(notes.get(position).getTimestamp())
 
