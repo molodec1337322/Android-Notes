@@ -1,14 +1,20 @@
 package com.example.androidnotes.notes
 
+import android.app.Activity
 import android.content.Context
+import android.content.Intent
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidnotes.R
 import com.example.androidnotes.TinyDB.TinyDB
+import com.example.androidnotes.activities.EditActivity
 import com.example.androidnotes.activities.MainActivity
 
 class NoteAdapter(val notes: MutableList<Note>, val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>()
@@ -35,7 +41,11 @@ class NoteAdapter(val notes: MutableList<Note>, val context: Context): RecyclerV
         })
 
         holder.itemView.setOnClickListener(View.OnClickListener {
-
+            val intent = Intent(context, EditActivity::class.java)
+            intent.putExtra(MainActivity.NOTE_TEXT, notes[position].getText())
+            intent.putExtra(MainActivity.NOTE_POSITION, position)
+            val tempActivity = context as Activity
+            tempActivity.startActivityForResult(intent, MainActivity.EDIT_NOTE)
         })
     }
 

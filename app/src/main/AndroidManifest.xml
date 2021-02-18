@@ -23,6 +23,10 @@
         <activity android:name=".activities.CreateActivity">
 
         </activity>
+
+        <activity android:name=".activities.EditActivity">
+
+        </activity>
     </application>
 
 </manifest>

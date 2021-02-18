@@ -7,7 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="80dp"
+        android:layout_height="60dp"
         android:orientation="vertical"
         android:background="@color/colorPrimary">
 
@@ -16,22 +16,13 @@
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="23dp"
+            android:layout_marginTop="17dp"
             android:gravity="start"
             android:text="Заметки"
             android:textColor="#FFFFFF"
-            android:textSize="24sp" />
+            android:textSize="20sp" />
 
-        <ImageButton
-            android:id="@+id/btn_create_new"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_gravity="end"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="40dp"
-            android:background="@color/colorPrimary"
-            android:src="@drawable/ic_baseline_create_40"/>
+
 
     </RelativeLayout>
 
@@ -46,6 +37,17 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layoutAnimation="@anim/layout_animation"/>
+
+        <ImageButton
+            android:id="@+id/btn_create_new"
+            android:layout_width="68dp"
+            android:layout_height="68dp"
+            android:layout_alignParentEnd="true"
+            android:layout_gravity="end"
+            android:layout_marginTop="-104dp"
+            android:layout_marginEnd="40dp"
+            android:background="@drawable/round"
+            android:src="@drawable/ic_baseline_create_40" />
 
     </LinearLayout>
 

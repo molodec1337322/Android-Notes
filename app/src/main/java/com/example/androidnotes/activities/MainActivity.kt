@@ -38,10 +38,14 @@ class MainActivity : AppCompatActivity() {
     companion object{
         const val CREATE_NEW_NOTE = 1
         const val EDIT_NOTE = 2
+
         const val RESULT_OK = 1
         const val RESULT_CANCELED = -1
 
         const val NOTES = "notes"
+        const val NOTE_TEXT = "note_text"
+        const val NOTE_TIMESTAMP = "note_timestamp"
+        const val NOTE_POSITION = "note_position"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,8 +76,8 @@ class MainActivity : AppCompatActivity() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if(requestCode == CREATE_NEW_NOTE && resultCode == RESULT_OK){
-            val noteText = data?.extras?.getString(CreateActivity.NOTE_TEXT)
-            val noteTimeStamp = data?.extras?.getString(CreateActivity.NOTE_TIMESTAMP)
+            val noteText = data?.extras?.getString(NOTE_TEXT)
+            val noteTimeStamp = data?.extras?.getString(NOTE_TIMESTAMP)
 
             notes.add(Note(noteText!!, noteTimeStamp!!))
             adapter!!.notifyItemChanged(notes.size - 1)
@@ -81,6 +85,21 @@ class MainActivity : AppCompatActivity() {
             putDataInDB()
 
             Toast.makeText(context, "Заметка создана", Toast.LENGTH_SHORT).show()
+        }
+        else if(requestCode == EDIT_NOTE && resultCode == RESULT_OK){
+            val noteText = data?.extras?.getString(NOTE_TEXT)
+            val noteTimestamp = data?.extras?.getString(NOTE_TIMESTAMP)
+            val notePos = data?.extras?.getInt(NOTE_POSITION)
+
+            val note = notes[notePos!!]
+            note.setText(noteText!!)
+            note.setTimestamp("Изменено $noteTimestamp")
+
+            adapter!!.notifyItemChanged(notePos)
+
+            putDataInDB()
+
+            Toast.makeText(context, "Заметка изменена", Toast.LENGTH_SHORT).show()
         }
     }
 

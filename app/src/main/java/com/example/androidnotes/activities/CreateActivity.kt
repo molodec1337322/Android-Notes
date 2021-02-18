@@ -17,11 +17,6 @@ class CreateActivity: Activity() {
     private lateinit var btn_cancel: ImageButton
     private lateinit var text_note: EditText
 
-    companion object{
-        val NOTE_TIMESTAMP = "note_timestamp"
-        val NOTE_TEXT = "note_text"
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.create_activity)
@@ -33,8 +28,8 @@ class CreateActivity: Activity() {
             if(text_note.text.toString() != "" ){
                 val intent = Intent(this, MainActivity::class.java)
 
-                intent.putExtra(NOTE_TEXT, text_note.text.toString())
-                intent.putExtra(NOTE_TIMESTAMP, SimpleDateFormat("dd/M/yyyy hh:mm", Locale.getDefault()).format(Date()).toString())
+                intent.putExtra(MainActivity.NOTE_TEXT, text_note.text.toString())
+                intent.putExtra(MainActivity.NOTE_TIMESTAMP, SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault()).format(Date()).toString())
 
                 setResult(MainActivity.RESULT_OK, intent)
                 finish()
