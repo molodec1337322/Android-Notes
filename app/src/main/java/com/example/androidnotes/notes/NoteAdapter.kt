@@ -14,8 +14,9 @@ import com.example.androidnotes.R
 import com.example.androidnotes.TinyDB.TinyDB
 import com.example.androidnotes.activities.EditActivity
 import com.example.androidnotes.activities.MainActivity
+import java.util.*
 
-class NoteAdapter(val notes: MutableList<Note>, val context: Context): RecyclerView.Adapter<RecyclerView.ViewHolder>()
+class NoteAdapter(val notes: MutableList<Note>, val deletedNotes: Stack<Pair<Note, Int>>, val context: Context, val checkForDeletedNotes: () -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return object: RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.items, parent, false)){}
@@ -35,9 +36,10 @@ class NoteAdapter(val notes: MutableList<Note>, val context: Context): RecyclerV
 
         val btnDelete = holder.itemView.findViewById<ImageButton>(R.id.btn_delete)
         btnDelete.setOnClickListener(View.OnClickListener {
-            notes.removeAt(position)
+            deletedNotes.push(notes.removeAt(position) to position)
             putDataInDB()
             this.notifyDataSetChanged()
+            checkForDeletedNotes()
         })
 
         holder.itemView.setOnClickListener(View.OnClickListener {

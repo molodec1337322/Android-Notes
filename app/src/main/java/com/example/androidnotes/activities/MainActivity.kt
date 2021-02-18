@@ -14,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView
 
 import com.example.androidnotes.R
 import com.example.androidnotes.TinyDB.TinyDB
+import com.example.androidnotes.extensions.setActive
+import com.example.androidnotes.extensions.setInactive
 import com.example.androidnotes.notes.Note
 import com.example.androidnotes.notes.NoteAdapter
 import com.example.androidnotes.notes.NotesData
@@ -26,8 +28,10 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var recycler: RecyclerView
     private lateinit var button_add: ImageButton
+    private lateinit var button_reply: ImageButton
 
     private var notes: MutableList<Note> = mutableListOf<Note>()
+    private var deletedNotes: Stack<Pair<Note, Int>> = Stack()
     private var notesData: NotesData? = null
     private var adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>? = null
 
@@ -57,7 +61,7 @@ class MainActivity : AppCompatActivity() {
 
         getDataFromDB()
 
-        adapter = NoteAdapter(notes, context)
+        adapter = NoteAdapter(notes, deletedNotes, context, { checkForDeletedNotes() })
 
         recycler = recycle_list
         recycler.setHasFixedSize(true)
@@ -66,10 +70,23 @@ class MainActivity : AppCompatActivity() {
 
 
         button_add = btn_create_new
+        button_reply = btn_reply
+
+        checkForDeletedNotes()
 
         button_add.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, CreateActivity::class.java)
             startActivityForResult(intent, CREATE_NEW_NOTE)
+        })
+
+        button_reply.setOnClickListener(View.OnClickListener {
+            if(!deletedNotes.empty()){
+                val (note, pos) = deletedNotes.pop()
+                notes.add(pos, note)
+                adapter!!.notifyDataSetChanged()
+                putDataInDB()
+                checkForDeletedNotes()
+            }
         })
     }
 
@@ -149,6 +166,15 @@ class MainActivity : AppCompatActivity() {
 
         if(notesData != null){
             notes = notesData!!.notes
+        }
+    }
+
+    fun checkForDeletedNotes(){
+        if(deletedNotes.empty()){
+            button_reply.setInactive()
+        }
+        else{
+            button_reply.setActive()
         }
     }
 }

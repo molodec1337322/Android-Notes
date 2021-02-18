@@ -22,6 +22,16 @@
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
 
+        <ImageButton
+            android:id="@+id/btn_reply"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@color/colorPrimary"
+            android:src="@drawable/ic_baseline_reply_40" />
+
 
 
     </RelativeLayout>
