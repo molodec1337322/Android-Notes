@@ -11,6 +11,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -126,9 +127,10 @@ class MainActivity : AppCompatActivity() {
 
         recycler = recycle_list
         recycler.setHasFixedSize(true)
-        recycler.layoutManager = LinearLayoutManager(this)
+        //recycler.setHasFixedSize(true)
+        //recycler.layoutManager = LinearLayoutManager(this)
+        recycler.layoutManager = GridLayoutManager(this, 2)
         recycler.adapter = adapter
-
 
         button_add = btn_create_new
         button_reply = btn_reply

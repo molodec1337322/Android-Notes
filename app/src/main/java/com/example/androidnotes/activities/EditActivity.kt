@@ -44,7 +44,7 @@ class EditActivity: Activity() {
 
             intent.putExtra(MainActivity.NOTE_TITLE, edit_title.text.toString())
             intent.putExtra(MainActivity.NOTE_TEXT, edit_text.text.toString())
-            intent.putExtra(MainActivity.NOTE_TIMESTAMP, SimpleDateFormat("dd/MM/yyyy hh:mm", Locale.getDefault()).format(Date()).toString())
+            intent.putExtra(MainActivity.NOTE_TIMESTAMP, SimpleDateFormat("dd/MM/yyyy\nhh:mm", Locale.getDefault()).format(Date()).toString())
             intent.putExtra(MainActivity.NOTE_POSITION, position)
 
             setResult(MainActivity.RESULT_OK, intent)
