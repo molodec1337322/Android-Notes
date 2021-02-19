@@ -90,8 +90,8 @@ class MainActivity : AppCompatActivity() {
             isCurrentlyActive: Boolean
         ) {
             val recyclerViewSwipeDecorator = RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
-                //.addSwipeLeftBackgroundColor(ContextCompat.getColor(context, R.color.deleting_red))
                 .addSwipeLeftLabel("Удалить")
+                .setSwipeLeftLabelColor(R.color.colorAccent)
                 .addSwipeLeftActionIcon(R.drawable.ic_baseline_delete_40)
                 .create()
                 .decorate()
