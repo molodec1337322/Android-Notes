@@ -4,5 +4,8 @@
     <color name="colorPrimaryDark">#00734C</color>
     <color name="colorAccent">#EDC94C</color>
     <color name="white">#FFFFFF</color>
+    <color name="background_grey">#DEDEDE</color>
     <color name="deleting_red">#FF0000</color>
+    <color name="orange">#EB5120</color>
+    <color name="darker_orange">#AB3A18</color>
 </resources>
