@@ -7,14 +7,12 @@ import android.content.pm.PackageManager
 import android.graphics.Canvas
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
+import android.widget.PopupMenu
 import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.*
 
 import com.example.androidnotes.R
 import com.example.androidnotes.TinyDB.TinyDB
@@ -25,19 +23,20 @@ import com.example.androidnotes.notes.NoteAdapter
 import com.example.androidnotes.notes.NotesData
 import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.android.synthetic.main.activity_main.*
-import java.text.SimpleDateFormat
 import java.util.*
-import kotlin.collections.ArrayList
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var recycler: RecyclerView
     private lateinit var button_add: ImageButton
     private lateinit var button_reply: ImageButton
+    private lateinit var button_popup_settins_column: ImageButton
 
     private var notes: MutableList<Note> = mutableListOf<Note>()
     private var deletedNotes: Stack<Pair<Note, Int>> = Stack()
     private var notesData: NotesData? = null
+
+    private var numberOfColumns = 0
 
     private var adapter: RecyclerView.Adapter<NoteAdapter.NoteHolder>? = null
 
@@ -113,6 +112,7 @@ class MainActivity : AppCompatActivity() {
         const val NOTE_TITLE = "note_title"
         const val NOTE_TIMESTAMP = "note_timestamp"
         const val NOTE_POSITION = "note_position"
+        const val NUMBER_OF_COLUMNS = "number_of_columns"
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -122,18 +122,20 @@ class MainActivity : AppCompatActivity() {
         checkPermissions()
 
         getDataFromDB()
+        getNumberOfColumnsFromDB()
 
         adapter = NoteAdapter(notes, context)
 
         recycler = recycle_list
+        //recycler.setHasFixedSize(false)
         recycler.setHasFixedSize(true)
-        //recycler.setHasFixedSize(true)
         //recycler.layoutManager = LinearLayoutManager(this)
-        recycler.layoutManager = GridLayoutManager(this, 2)
+        recycler.layoutManager = StaggeredGridLayoutManager(numberOfColumns, StaggeredGridLayoutManager.VERTICAL)
         recycler.adapter = adapter
 
         button_add = btn_create_new
         button_reply = btn_reply
+        button_popup_settins_column = btn_popup_settings_menu
 
         checkForDeletedNotes()
 
@@ -150,6 +152,40 @@ class MainActivity : AppCompatActivity() {
                 putDataInDB()
                 checkForDeletedNotes()
             }
+        })
+
+        button_popup_settins_column.setOnClickListener(View.OnClickListener {
+            val popupSettings = PopupMenu(this, button_popup_settins_column)
+            popupSettings.inflate(R.menu.popup_menu_columns)
+
+            popupSettings.setOnMenuItemClickListener(object: PopupMenu.OnMenuItemClickListener {
+                override fun onMenuItemClick(p0: MenuItem?): Boolean {
+                    val itemId = p0?.itemId
+                    when(itemId){
+                        R.id.one_column -> {
+                            numberOfColumns = 1
+                            recycler.layoutManager = StaggeredGridLayoutManager(numberOfColumns, StaggeredGridLayoutManager.VERTICAL)
+                            putNumberOfColumnsInDB()
+                            return true
+                        }
+                        R.id.two_column -> {
+                            numberOfColumns = 2
+                            recycler.layoutManager = StaggeredGridLayoutManager(numberOfColumns, StaggeredGridLayoutManager.VERTICAL)
+                            putNumberOfColumnsInDB()
+                            return true
+                        }
+                        R.id.three_column -> {
+                            numberOfColumns = 3
+                            recycler.layoutManager = StaggeredGridLayoutManager(numberOfColumns, StaggeredGridLayoutManager.VERTICAL)
+                            putNumberOfColumnsInDB()
+                            return true
+                        }
+                        else -> return false
+                    }
+                }
+            })
+
+            popupSettings.show()
         })
 
         val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback)
@@ -232,6 +268,19 @@ class MainActivity : AppCompatActivity() {
 
         if(notesData != null){
             notes = notesData!!.notes
+        }
+    }
+
+    fun putNumberOfColumnsInDB(){
+        val tinyDB = TinyDB(context)
+        tinyDB.putInt(NUMBER_OF_COLUMNS, numberOfColumns)
+    }
+
+    fun getNumberOfColumnsFromDB(){
+        val tinyDB = TinyDB(context)
+        numberOfColumns = tinyDB.getInt(NUMBER_OF_COLUMNS)
+        if(numberOfColumns != 1 && numberOfColumns != 2 && numberOfColumns != 3){
+            numberOfColumns = 2
         }
     }
 

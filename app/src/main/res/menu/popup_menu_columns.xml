@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+        <item
+            android:id="@+id/one_column"
+            android:title="Списком"/>
+
+        <item
+            android:id="@+id/two_column"
+            android:title="В 2 колоки"/>
+
+        <item
+            android:id="@+id/three_column"
+            android:title="В 3 колонки"/>
+</menu>

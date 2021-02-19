@@ -12,7 +12,7 @@
         android:background="@color/colorPrimary">
 
         <ImageButton
-            android:id="@+id/btn_sidebar_menu"
+            android:id="@+id/btn_popup_settings_menu"
             android:layout_width="40dp"
             android:layout_height="40dp"
             android:layout_alignParentStart="true"
@@ -26,7 +26,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="24dp"
             android:layout_marginTop="17dp"
-            android:layout_toEndOf="@+id/btn_sidebar_menu"
+            android:layout_toEndOf="@+id/btn_popup_settings_menu"
             android:gravity="start"
             android:text="Заметки"
             android:textColor="#FFFFFF"
@@ -46,7 +46,7 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -63,12 +63,13 @@
             android:layout_width="68dp"
             android:layout_height="68dp"
             android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
             android:layout_gravity="end"
-            android:layout_marginTop="-104dp"
-            android:layout_marginEnd="40dp"
+            android:layout_marginEnd="56dp"
+            android:layout_marginBottom="56dp"
             android:background="@drawable/round"
             android:src="@drawable/ic_baseline_create_40" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
