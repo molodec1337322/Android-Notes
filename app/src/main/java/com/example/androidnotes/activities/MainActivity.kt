@@ -4,11 +4,14 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.Canvas
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageButton
 import android.widget.Toast
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -19,6 +22,7 @@ import com.example.androidnotes.extensions.setInactive
 import com.example.androidnotes.notes.Note
 import com.example.androidnotes.notes.NoteAdapter
 import com.example.androidnotes.notes.NotesData
+import it.xabaras.android.recyclerview.swipedecorator.RecyclerViewSwipeDecorator
 import kotlinx.android.synthetic.main.activity_main.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,11 +37,66 @@ class MainActivity : AppCompatActivity() {
     private var notes: MutableList<Note> = mutableListOf<Note>()
     private var deletedNotes: Stack<Pair<Note, Int>> = Stack()
     private var notesData: NotesData? = null
+
     private var adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>? = null
 
     private val context: Context = this
 
     private val PERMISSION_CODE: Int = 1000
+
+    private val ItemTouchHelperCallback = object: ItemTouchHelper.SimpleCallback(
+        ItemTouchHelper.UP or
+                ItemTouchHelper.DOWN or
+                ItemTouchHelper.START or
+                ItemTouchHelper.END,
+        ItemTouchHelper.LEFT
+    ) {
+        override fun onMove(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+            val fromPosition = viewHolder.adapterPosition
+            val toPosition = target.adapterPosition
+
+            val tempNote = notes[fromPosition]
+            notes[fromPosition] = notes[toPosition]
+            notes[toPosition] = tempNote
+
+            recyclerView.adapter!!.notifyItemMoved(fromPosition, toPosition)
+
+            return true
+        }
+
+        override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
+            val position = viewHolder.adapterPosition
+
+            deletedNotes.push(notes.removeAt(position) to position)
+
+            putDataInDB()
+            adapter!!.notifyItemRemoved(position)
+            checkForDeletedNotes()
+        }
+
+        override fun onChildDraw(
+            c: Canvas,
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder,
+            dX: Float,
+            dY: Float,
+            actionState: Int,
+            isCurrentlyActive: Boolean
+        ) {
+            val recyclerViewSwipeDecorator = RecyclerViewSwipeDecorator.Builder(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+                //.addSwipeLeftBackgroundColor(ContextCompat.getColor(context, R.color.deleting_red))
+                .addSwipeLeftLabel("Удалить")
+                .addSwipeLeftActionIcon(R.drawable.ic_baseline_delete_40)
+                .create()
+                .decorate()
+
+            super.onChildDraw(c, recyclerView, viewHolder, dX, dY, actionState, isCurrentlyActive)
+        }
+    }
 
     companion object{
         const val CREATE_NEW_NOTE = 1
@@ -61,7 +120,7 @@ class MainActivity : AppCompatActivity() {
 
         getDataFromDB()
 
-        adapter = NoteAdapter(notes, deletedNotes, context, { checkForDeletedNotes() })
+        adapter = NoteAdapter(notes, context)
 
         recycler = recycle_list
         recycler.setHasFixedSize(true)
@@ -88,6 +147,9 @@ class MainActivity : AppCompatActivity() {
                 checkForDeletedNotes()
             }
         })
+
+        val itemTouchHelper = ItemTouchHelper(ItemTouchHelperCallback)
+        itemTouchHelper.attachToRecyclerView(recycler)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

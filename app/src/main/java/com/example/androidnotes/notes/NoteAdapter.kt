@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
 import android.widget.TextView
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidnotes.R
 import com.example.androidnotes.TinyDB.TinyDB
@@ -16,9 +17,14 @@ import com.example.androidnotes.activities.EditActivity
 import com.example.androidnotes.activities.MainActivity
 import java.util.*
 
-class NoteAdapter(val notes: MutableList<Note>, val deletedNotes: Stack<Pair<Note, Int>>, val context: Context, val checkForDeletedNotes: () -> Unit): RecyclerView.Adapter<RecyclerView.ViewHolder>()
+class NoteAdapter(
+    val notes: MutableList<Note>,
+    val context: Context
+): RecyclerView.Adapter<RecyclerView.ViewHolder>()
 {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        val noteView = LayoutInflater.from(parent.context).inflate(R.layout.items, parent, false)
+        val noteHolder = NoteHolder(noteView)
         return object: RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.items, parent, false)){}
     }
 
@@ -33,14 +39,6 @@ class NoteAdapter(val notes: MutableList<Note>, val deletedNotes: Stack<Pair<Not
         noteText.setText(notes.get(position).getText())
         val timestamp = holder.itemView.findViewById<TextView>(R.id.text_timestamp)
         timestamp.setText(notes.get(position).getTimestamp())
-
-        val btnDelete = holder.itemView.findViewById<ImageButton>(R.id.btn_delete)
-        btnDelete.setOnClickListener(View.OnClickListener {
-            deletedNotes.push(notes.removeAt(position) to position)
-            putDataInDB()
-            this.notifyDataSetChanged()
-            checkForDeletedNotes()
-        })
 
         holder.itemView.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, EditActivity::class.java)
@@ -58,5 +56,9 @@ class NoteAdapter(val notes: MutableList<Note>, val deletedNotes: Stack<Pair<Not
     private fun putDataInDB(){
         val tinyDB = TinyDB(context)
         tinyDB.putObject(MainActivity.NOTES, NotesData(notes))
+    }
+
+    inner class NoteHolder(val noteView: View): RecyclerView.ViewHolder(noteView){
+        
     }
 }
