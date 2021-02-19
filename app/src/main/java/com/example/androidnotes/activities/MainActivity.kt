@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     private var deletedNotes: Stack<Pair<Note, Int>> = Stack()
     private var notesData: NotesData? = null
 
-    private var adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>? = null
+    private var adapter: RecyclerView.Adapter<NoteAdapter.NoteHolder>? = null
 
     private val context: Context = this
 
@@ -63,7 +63,9 @@ class MainActivity : AppCompatActivity() {
             notes[fromPosition] = notes[toPosition]
             notes[toPosition] = tempNote
 
-            recyclerView.adapter!!.notifyItemMoved(fromPosition, toPosition)
+            putDataInDB()
+
+            adapter!!.notifyItemMoved(fromPosition, toPosition)
 
             return true
         }

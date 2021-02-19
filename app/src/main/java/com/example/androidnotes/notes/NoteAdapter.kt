@@ -20,25 +20,31 @@ import java.util.*
 class NoteAdapter(
     val notes: MutableList<Note>,
     val context: Context
-): RecyclerView.Adapter<RecyclerView.ViewHolder>()
+): RecyclerView.Adapter<NoteAdapter.NoteHolder>()
 {
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteHolder {
         val noteView = LayoutInflater.from(parent.context).inflate(R.layout.items, parent, false)
-        val noteHolder = NoteHolder(noteView)
-        return object: RecyclerView.ViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.items, parent, false)){}
+        return NoteHolder(noteView)
     }
 
     override fun getItemCount(): Int {
         return notes.size
     }
 
-    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: NoteAdapter.NoteHolder, position: Int) {
+
+        /*
         val noteTitle = holder.itemView.findViewById<TextView>(R.id.title_note)
         noteTitle.setText(notes.get(position).getTitle())
         val noteText = holder.itemView.findViewById<TextView>(R.id.text_note)
         noteText.setText(notes.get(position).getText())
         val timestamp = holder.itemView.findViewById<TextView>(R.id.text_timestamp)
         timestamp.setText(notes.get(position).getTimestamp())
+         */
+
+        holder.noteTitle.text = notes[position].getTitle()
+        holder.noteText.text = notes[position].getText()
+        holder.timeStamp.text = notes[position].getTimestamp()
 
         holder.itemView.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, EditActivity::class.java)
@@ -58,7 +64,9 @@ class NoteAdapter(
         tinyDB.putObject(MainActivity.NOTES, NotesData(notes))
     }
 
-    inner class NoteHolder(val noteView: View): RecyclerView.ViewHolder(noteView){
-        
+    class NoteHolder(val noteView: View): RecyclerView.ViewHolder(noteView){
+        val noteTitle = noteView.findViewById<TextView>(R.id.title_note)
+        val noteText = noteView.findViewById<TextView>(R.id.text_note)
+        val timeStamp = noteView.findViewById<TextView>(R.id.text_timestamp)
     }
 }
