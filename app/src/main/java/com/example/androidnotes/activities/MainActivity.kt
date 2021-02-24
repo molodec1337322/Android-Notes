@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.recyclerview.widget.*
@@ -111,6 +112,7 @@ class MainActivity : AppCompatActivity() {
         const val NOTE_TEXT = "note_text"
         const val NOTE_TITLE = "note_title"
         const val NOTE_TIMESTAMP = "note_timestamp"
+        const val NOTE_IMAGE = "note_image"
         const val NOTE_POSITION = "note_position"
         const val NUMBER_OF_COLUMNS = "number_of_columns"
     }
@@ -200,7 +202,7 @@ class MainActivity : AppCompatActivity() {
             val noteText = data?.extras?.getString(NOTE_TEXT)
             val noteTimeStamp = data?.extras?.getString(NOTE_TIMESTAMP)
 
-            notes.add(Note(noteTitle!!, noteText!!, noteTimeStamp!!))
+            notes.add(Note(noteTitle!!, noteText!!, noteTimeStamp!!, null))
             adapter!!.notifyItemChanged(notes.size - 1)
 
             putDataInDB()

@@ -1,12 +1,14 @@
 package com.example.androidnotes.notes
 
+import android.graphics.Bitmap
 import java.text.SimpleDateFormat
 import java.util.*
 
-class Note(newTitle: String, newText: String, newTimestamp: String) {
+class Note(newTitle: String, newText: String, newTimestamp: String, newImage: Bitmap?) {
     private var title: String = newTitle
     private var text: String = newText
     private var timestamp: String = newTimestamp
+    private var image: Bitmap? = newImage
 
     fun setTitle(newTitle: String){
         title = newTitle
@@ -20,6 +22,10 @@ class Note(newTitle: String, newText: String, newTimestamp: String) {
         timestamp = newTimestamp
     }
 
+    fun setImage(newImage: Bitmap){
+        image = newImage
+    }
+
     fun getTitle(): String{
         return title
     }
@@ -30,5 +36,9 @@ class Note(newTitle: String, newText: String, newTimestamp: String) {
 
     fun getTimestamp(): String{
         return timestamp
+    }
+
+    fun getImage(): Bitmap?{
+        return image
     }
 }

@@ -2,6 +2,8 @@ package com.example.androidnotes.activities
 
 import android.app.Activity
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.os.Bundle
 import android.view.View
 import android.widget.EditText
@@ -18,6 +20,15 @@ class CreateActivity: Activity() {
     private lateinit var btn_cancel: ImageButton
     private lateinit var title_note: EditText
     private lateinit var text_note: EditText
+    private lateinit var btn_draw: ImageButton
+
+    private var noteImage: Bitmap? = null
+
+    companion object{
+        const val DRAW_NEW_NOTE = 4
+        const val RESULT_OK = 1
+        const val RESULT_CANCELED = 2
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -52,5 +63,25 @@ class CreateActivity: Activity() {
             finish()
             //startActivity(intent)
         })
+
+        btn_draw = btn_create_new_draw
+        btn_draw.setOnClickListener(View.OnClickListener {
+            val intent = Intent(this, DrawingActivity::class.java)
+            startActivityForResult(intent, DRAW_NEW_NOTE)
+        })
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        if(requestCode == DRAW_NEW_NOTE && resultCode == RESULT_OK){
+            /*
+            noteImage = data?.extras?.getParcelable(DrawingActivity.BITMAP_TO_IMPORT)
+             */
+            noteImage = BitmapFactory.decodeStream(this.openFileInput(DrawingActivity.BITMAP_TO_IMPORT))
+        }
+        else if(requestCode == DRAW_NEW_NOTE && resultCode == RESULT_CANCELED){
+            //здесь должен быть код
+        }
     }
 }
