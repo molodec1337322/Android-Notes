@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.EditText
 import android.widget.ImageButton
+import android.widget.ImageView
 import com.example.androidnotes.R
 import kotlinx.android.synthetic.main.create_activity.*
 import kotlinx.android.synthetic.main.items.*
@@ -21,6 +22,7 @@ class CreateActivity: Activity() {
     private lateinit var title_note: EditText
     private lateinit var text_note: EditText
     private lateinit var btn_draw: ImageButton
+    private lateinit var img_userImage: ImageView
 
     private var noteImage: Bitmap? = null
 
@@ -45,6 +47,10 @@ class CreateActivity: Activity() {
                 intent.putExtra(MainActivity.NOTE_TITLE, text_note_title.text.toString())
                 intent.putExtra(MainActivity.NOTE_TEXT, text_note.text.toString())
                 intent.putExtra(MainActivity.NOTE_TIMESTAMP, SimpleDateFormat("dd/MM/yyyy\nhh:mm", Locale.getDefault()).format(Date()).toString())
+                when(noteImage){
+                    null -> intent.putExtra(MainActivity.NOTE_IMAGE_AVAILABLE, false)
+                    else -> intent.putExtra(MainActivity.NOTE_IMAGE_AVAILABLE, true)
+                }
 
                 setResult(MainActivity.RESULT_OK, intent)
                 finish()
@@ -69,6 +75,8 @@ class CreateActivity: Activity() {
             val intent = Intent(this, DrawingActivity::class.java)
             startActivityForResult(intent, DRAW_NEW_NOTE)
         })
+
+        img_userImage = img_new_draw
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -77,11 +85,15 @@ class CreateActivity: Activity() {
         if(requestCode == DRAW_NEW_NOTE && resultCode == RESULT_OK){
             /*
             noteImage = data?.extras?.getParcelable(DrawingActivity.BITMAP_TO_IMPORT)
-             */
+            */
             noteImage = BitmapFactory.decodeStream(this.openFileInput(DrawingActivity.BITMAP_TO_IMPORT))
+            img_userImage.setImageBitmap(noteImage)
         }
         else if(requestCode == DRAW_NEW_NOTE && resultCode == RESULT_CANCELED){
-            //здесь должен быть код
+            if(noteImage != null){
+                noteImage!!.recycle()
+            }
+            noteImage = null
         }
     }
 }

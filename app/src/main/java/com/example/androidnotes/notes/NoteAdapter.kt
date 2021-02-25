@@ -3,12 +3,16 @@ package com.example.androidnotes.notes
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageButton
+import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.view.isInvisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidnotes.R
@@ -32,19 +36,17 @@ class NoteAdapter(
     }
 
     override fun onBindViewHolder(holder: NoteAdapter.NoteHolder, position: Int) {
-
-        /*
-        val noteTitle = holder.itemView.findViewById<TextView>(R.id.title_note)
-        noteTitle.setText(notes.get(position).getTitle())
-        val noteText = holder.itemView.findViewById<TextView>(R.id.text_note)
-        noteText.setText(notes.get(position).getText())
-        val timestamp = holder.itemView.findViewById<TextView>(R.id.text_timestamp)
-        timestamp.setText(notes.get(position).getTimestamp())
-         */
-
         holder.noteTitle.text = notes[position].getTitle()
         holder.noteText.text = notes[position].getText()
         holder.timeStamp.text = notes[position].getTimestamp()
+        val image = notes[position].getImage()
+        if(image != null){
+            holder.image.setImageBitmap(Bitmap.createBitmap(image))
+            //image.recycle()
+        }
+        else{
+            holder.image.visibility = ImageView.INVISIBLE
+        }
 
         holder.itemView.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, EditActivity::class.java)
@@ -59,14 +61,10 @@ class NoteAdapter(
         })
     }
 
-    private fun putDataInDB(){
-        val tinyDB = TinyDB(context)
-        tinyDB.putObject(MainActivity.NOTES, NotesData(notes))
-    }
-
-    class NoteHolder(val noteView: View): RecyclerView.ViewHolder(noteView){
+    class NoteHolder(noteView: View): RecyclerView.ViewHolder(noteView){
         val noteTitle = noteView.findViewById<TextView>(R.id.title_note)
         val noteText = noteView.findViewById<TextView>(R.id.text_note)
         val timeStamp = noteView.findViewById<TextView>(R.id.text_timestamp)
+        val image = noteView.findViewById<ImageView>(R.id.img_note_image)
     }
 }

@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.graphics.BitmapFactory
 import android.graphics.Canvas
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -77,7 +78,8 @@ class MainActivity : AppCompatActivity() {
             deletedNotes.push(notes.removeAt(position) to position)
 
             putDataInDB()
-            adapter!!.notifyItemRemoved(position)
+            //adapter!!.notifyItemRemoved(position)
+            adapter!!.notifyDataSetChanged()
             checkForDeletedNotes()
         }
 
@@ -112,7 +114,8 @@ class MainActivity : AppCompatActivity() {
         const val NOTE_TEXT = "note_text"
         const val NOTE_TITLE = "note_title"
         const val NOTE_TIMESTAMP = "note_timestamp"
-        const val NOTE_IMAGE = "note_image"
+        //const val NOTE_IMAGE = "note_image"
+        const val NOTE_IMAGE_AVAILABLE = "note_image_available"
         const val NOTE_POSITION = "note_position"
         const val NUMBER_OF_COLUMNS = "number_of_columns"
     }
@@ -202,8 +205,17 @@ class MainActivity : AppCompatActivity() {
             val noteText = data?.extras?.getString(NOTE_TEXT)
             val noteTimeStamp = data?.extras?.getString(NOTE_TIMESTAMP)
 
-            notes.add(Note(noteTitle!!, noteText!!, noteTimeStamp!!, null))
-            adapter!!.notifyItemChanged(notes.size - 1)
+            val noteImageAvailable = data?.extras?.getBoolean(NOTE_IMAGE_AVAILABLE)
+            if(noteImageAvailable!!){
+                val newImage = BitmapFactory.decodeStream(this.openFileInput(DrawingActivity.BITMAP_TO_IMPORT))
+                notes.add(Note(noteTitle!!, noteText!!, noteTimeStamp!!, newImage))
+            }
+            else{
+                notes.add(Note(noteTitle!!, noteText!!, noteTimeStamp!!, null))
+            }
+
+            //adapter!!.notifyItemChanged(notes.size - 1)
+            adapter!!.notifyDataSetChanged()
 
             putDataInDB()
 
@@ -237,6 +249,12 @@ class MainActivity : AppCompatActivity() {
         when(requestCode){
             PERMISSION_CODE -> {
                 if(grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+
+                }
+                else{
+                    Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
+                }
+                if(grantResults.isNotEmpty() && grantResults[1] == PackageManager.PERMISSION_GRANTED){
 
                 }
                 else{
