@@ -8,7 +8,7 @@ class Note(newTitle: String, newText: String, newTimestamp: String, newImage: Bi
     private var title: String = newTitle
     private var text: String = newText
     private var timestamp: String = newTimestamp
-    private var image: Bitmap? = newImage
+    private var image: BitmapDataObject? = if(newImage == null) null else BitmapDataObject(newImage)
 
     fun setTitle(newTitle: String){
         title = newTitle
@@ -23,7 +23,7 @@ class Note(newTitle: String, newText: String, newTimestamp: String, newImage: Bi
     }
 
     fun setImage(newImage: Bitmap){
-        image = newImage
+        image = BitmapDataObject(newImage)
     }
 
     fun getTitle(): String{
@@ -39,6 +39,6 @@ class Note(newTitle: String, newText: String, newTimestamp: String, newImage: Bi
     }
 
     fun getImage(): Bitmap?{
-        return image
+        return image?.getBitmap()
     }
 }
