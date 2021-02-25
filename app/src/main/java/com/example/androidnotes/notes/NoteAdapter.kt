@@ -13,6 +13,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.view.isInvisible
+import androidx.core.view.isVisible
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.androidnotes.R
@@ -41,7 +42,7 @@ class NoteAdapter(
         holder.timeStamp.text = notes[position].getTimestamp()
         val image = notes[position].getImage()
         if(image != null){
-            holder.image.setImageBitmap(Bitmap.createBitmap(image))
+            holder.image.setImageBitmap(image)
             //image.recycle()
         }
         else{
