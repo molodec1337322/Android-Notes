@@ -114,7 +114,7 @@ class MainActivity : AppCompatActivity() {
         const val NOTE_TEXT = "note_text"
         const val NOTE_TITLE = "note_title"
         const val NOTE_TIMESTAMP = "note_timestamp"
-        //const val NOTE_IMAGE = "note_image"
+        const val NOTE_IMAGE = "note_image"
         const val NOTE_IMAGE_AVAILABLE = "note_image_available"
         const val NOTE_POSITION = "note_position"
         const val NUMBER_OF_COLUMNS = "number_of_columns"
@@ -133,7 +133,7 @@ class MainActivity : AppCompatActivity() {
 
         recycler = recycle_list
         //recycler.setHasFixedSize(false)
-        recycler.setHasFixedSize(true)
+        recycler.setHasFixedSize(false)
         //recycler.layoutManager = LinearLayoutManager(this)
         recycler.layoutManager = StaggeredGridLayoutManager(numberOfColumns, StaggeredGridLayoutManager.VERTICAL)
         recycler.adapter = adapter

@@ -40,20 +40,27 @@ class NoteAdapter(
         holder.noteTitle.text = notes[position].getTitle()
         holder.noteText.text = notes[position].getText()
         holder.timeStamp.text = notes[position].getTimestamp()
+        //holder.noteImage.setImageBitmap(notes[position].getImage())
+
+
         val image = notes[position].getImage()
+        //holder.noteImage.setImageBitmap(image)
+
         if(image != null){
-            holder.image.setImageBitmap(image)
+            holder.noteImage.setImageBitmap(image)
             //image.recycle()
         }
         else{
-            holder.image.visibility = ImageView.INVISIBLE
+            holder.noteImage.setImageBitmap(null)
+            holder.noteImage.maxHeight = 0
+            holder.noteImage.visibility = ImageView.INVISIBLE
         }
+
+
 
         holder.itemView.setOnClickListener(View.OnClickListener {
             val intent = Intent(context, EditActivity::class.java)
 
-            intent.putExtra(MainActivity.NOTE_TITLE, notes[position].getTitle())
-            intent.putExtra(MainActivity.NOTE_TEXT, notes[position].getText())
             intent.putExtra(MainActivity.NOTE_POSITION, position)
 
             val tempActivity = context as Activity
@@ -66,6 +73,8 @@ class NoteAdapter(
         val noteTitle = noteView.findViewById<TextView>(R.id.title_note)
         val noteText = noteView.findViewById<TextView>(R.id.text_note)
         val timeStamp = noteView.findViewById<TextView>(R.id.text_timestamp)
-        val image = noteView.findViewById<ImageView>(R.id.img_note_image)
+        val noteImage = noteView.findViewById<ImageView>(R.id.img_note_image)
     }
+
+
 }

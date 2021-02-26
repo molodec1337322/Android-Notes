@@ -29,9 +29,19 @@
             android:layout_marginTop="18dp"
             android:layout_toEndOf="@+id/btn_edit_cancel"
             android:gravity="start"
-            android:text="Редактирование заметки"
+            android:text="Изменение заметки"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
+
+        <ImageButton
+            android:id="@+id/btn_edit_draw"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginEnd="40dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/oval_for_taskbar"
+            android:src="@drawable/ic_baseline_create_40"
+            android:layout_toStartOf="@+id/btn_edit_accept" />
 
         <ImageButton
             android:id="@+id/btn_edit_accept"
@@ -46,24 +56,42 @@
 
     </RelativeLayout>
 
-    <LinearLayout
+    <RelativeLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <EditText
-            android:id="@+id/text_note_edit_title"
+        <ScrollView
             android:layout_width="match_parent"
-            android:hint="Заголовок"
-            android:layout_height="60dp"/>
+            android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/text_note_edit_text"
-            android:layout_width="match_parent"
-            android:layout_marginTop="8dp"
-            android:hint="Текст"
-            android:layout_height="match_parent"/>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-    </LinearLayout>
+                <EditText
+                    android:id="@+id/text_note_edit_title"
+                    android:layout_width="match_parent"
+                    android:hint="Заголовок"
+                    android:layout_height="60dp"/>
+
+                <EditText
+                    android:id="@+id/text_note_edit_text"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:hint="Текст" />
+
+                <ImageView
+                    android:id="@+id/img_edit_draw"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </RelativeLayout>
 
 </LinearLayout>
